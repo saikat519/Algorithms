@@ -1,0 +1,23 @@
+from sys import setrecursionlimit
+limit=100000                        # without setting the limit it will not pass the testcases
+setrecursionlimit(limit)
+def unbounded(t,wt,cap,n):
+    if n==0 or cap==0:
+        return 0
+    if t[n][cap]!=-1:
+        return t[n][cap]
+    if wt[n-1] <= cap:
+        t[n][cap]=max(wt[n-1]+unbounded(t,wt,cap-wt[n-1],n),unbounded(t,wt,cap,n-1))
+        return t[n][cap]
+    else:
+        t[n][cap]=unbounded(t,wt,cap,n-1)
+        return t[n][cap]
+test=int(input())
+for i in range(test):
+    n,cap=input().split()
+    n=int(n)
+    cap=int(cap)
+    t=[[-1 for j in range(cap+1)]for i in range(n+1)]
+    wt=[int(i) for i in input().split()]
+    ans=unbounded(t,wt,cap,n)
+    print(ans)
